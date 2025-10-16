@@ -1,22 +1,15 @@
 <?php
     require 'header.php';
-    require 'oeuvres.php';
+    require 'bdd.php';
+    $db = connexion();
 
     if(empty($_GET['id'])) {
         header('Location: index.php');
     }
-
-    $oeuvre = null;
-    foreach($oeuvres as $o) {
-        if($o['id'] === intval($_GET['id'])) {
-            $oeuvre = $o;
-            break; 
-        }
-        else {
-    $oeuvre = intval($_GET['id']);
-    $oeuvre = $o;
-        }
-    }
+    $oeuvres = $db->prepare('SELECT * FROM oeuvres WHERE ID = ?');
+    $oeuvres->execute([$_GET['id']]);
+    $oeuvre = $oeuvres->fetch();
+    
 ?>
 
 <article id="detail-oeuvre">
